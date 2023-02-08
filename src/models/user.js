@@ -66,7 +66,7 @@ userSchema.virtual('tasks', {
 // Instance method, this refers to document
 userSchema.methods.generateAuthToken = async function () {
     const user = this
-    const token = jwt.sign({_id: user.id}, 'thisismynewcourse') // token is generated from id and secret key
+    const token = jwt.sign({_id: user.id}, process.env.JWT_SECRET) // token is generated from id and secret key
     user.tokens = user.tokens.concat({token}) // tokens is an array
     await user.save()
     return token
@@ -78,6 +78,7 @@ userSchema.methods.toJSON = function () {
     const userObject = user.toObject()
     delete userObject.password
     delete userObject.tokens
+    delete userObject.avatar
     return userObject
 }
 
