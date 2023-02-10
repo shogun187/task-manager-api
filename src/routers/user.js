@@ -4,6 +4,7 @@ const router = new express.Router()
 const auth = require('../middleware/auth.js')
 const multer = require('multer')
 const sharp = require('sharp')
+const path = require('path')
 
 
 //  Sign up
@@ -12,7 +13,9 @@ router.post('/users', async (req, res) => {
     try {
         await user.save()
         const token = await user.generateAuthToken()
-        res.status(201).send({user, token})
+        res.cookie('auth_token', token)
+        res.sendFile(path.resolve(__dirname, '..', 'views', 'private.html'))
+        //res.status(201).send({user, token})
     } catch (e) {
         res.status(400).send(e)
     }
@@ -23,7 +26,9 @@ router.post('/users/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password)
         const token = await user.generateAuthToken()
-        res.send({user, token}) // toJSON is used
+        res.cookie('auth_token', token)
+        res.sendFile(path.resolve(__dirname, '..', 'views', 'private.html'))
+        //res.send({user, token}) // toJSON is used
     } catch (e) {
         res.status(400).send(e)
     }
