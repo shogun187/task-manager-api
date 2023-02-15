@@ -10,6 +10,7 @@ const port = process.env.PORT
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers","*")
+    next()
 })
 
 app.use(express.json())
