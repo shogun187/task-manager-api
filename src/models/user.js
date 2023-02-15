@@ -6,18 +6,6 @@ const Task = require('./task.js')
 
 
 const userSchema = new mongoose.Schema({
-        name: {
-            type: String, required: true
-        },
-        age: {
-            type: Number,
-            validate(value) {
-                if (value < 0) {
-                    throw new Error('Age must be positive')
-                }
-            },
-            default: 0
-        },
         email: {
             type: String,
             required: true,
